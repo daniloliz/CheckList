@@ -3,6 +3,8 @@ CheckList é um aplicativo que tem integração com uma Azure Function. Ele ser�
 
 Issue:
 
-.Desenvolvimento Android;
-.Integração com banco de dados na nuvem - Azure;
-.Publicação com o App Center da Microsoft.
+.Desenvolvimento Android
+
+.Integração com banco de dados na nuvem - Azure
+
+.Publicação com o App Center da Microsoft
