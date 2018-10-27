@@ -8,3 +8,5 @@ Issue:
 .Integração com banco de dados na nuvem - Azure
 
 .Publicação com o App Center da Microsoft
+
+.Testes UI
