@@ -1,0 +1,99 @@
+﻿#r "Newtonsoft.Json"
+
+using System.Net;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json;
+using System.IO;
+using System;
+using System.Collections.Generic;
+
+public static async Task<IActionResult> Run(HttpRequest req, ILogger log)
+{
+    var cart1 = new CarteiraVacinacao
+            {
+                Id = 1,
+                Vencimento = new DateTime(2018, 8, 20, 0, 0, 0),
+                Status = StatusVacinacaoEnum.SIM,
+                Responsavel = "Kovalski",
+                Pet = "Cachorro"
+            };
+
+            var cart2 = new CarteiraVacinacao
+            {
+                Id = 2,
+                Vencimento = new DateTime(2019, 7, 20, 0, 0, 0),
+                Status = StatusVacinacaoEnum.NAO,
+                Responsavel = "Airan",
+                Pet = "Gato"
+            };
+
+            var cart3 = new CarteiraVacinacao
+            {
+                Id = 3,
+                Vencimento = new DateTime(2019, 8, 20, 0, 0, 0),
+                Status = StatusVacinacaoEnum.SIM,
+                Responsavel = "Carlão",
+                Pet = "Papagaio"
+            };
+
+            var cart4 = new CarteiraVacinacao
+            {
+                Id = 4,
+                Vencimento = new DateTime(2018, 10, 21, 0, 0, 0),
+                Status = StatusVacinacaoEnum.NAO,
+                Responsavel = "Marcos",
+                Pet = "Tartaruga"
+            };
+
+            var cart5 = new CarteiraVacinacao
+            {
+                Id = 5,
+                Vencimento = new DateTime(2018, 8, 20, 0, 0, 0),
+                Status = StatusVacinacaoEnum.SIM,
+                Responsavel = "Jackson",
+                Pet = "Gata"
+            };
+
+            var carts = new List<CarteiraVacinacao>
+            {
+                cart1,
+                cart2,
+                cart3,
+                cart4,
+                cart5
+            };
+
+    string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+    dynamic data = JsonConvert.DeserializeObject(requestBody);
+
+    var list = JsonConvert.SerializeObject(carts);
+
+    return  (ActionResult)new OkObjectResult(list);
+}
+
+public enum StatusVacinacaoEnum
+{
+    SIM, NAO
+}
+
+public class CarteiraVacinacao
+{
+        public int Id { get; set; }
+        public DateTime Vencimento { get; set; }
+        public StatusVacinacaoEnum Status { get; set; }
+        public string Responsavel { get; set; }
+        public string Pet { get; set; }
+
+        public bool IsVencido()
+        {
+            var dataAtual = DateTime.Now;
+            return DateTime.Compare(this.Vencimento, new DateTime(dataAtual.Year, dataAtual.Month, dataAtual.Day, 0, 0, 0)) < 0;
+        }
+
+        public bool IsVencer()
+        {
+            var dataAtual = DateTime.Now;
+            return DateTime.Compare(this.Vencimento, new DateTime(dataAtual.Year, dataAtual.Month, dataAtual.Day, 0, 0, 0)) == 0;
+        }
+}
